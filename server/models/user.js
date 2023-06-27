@@ -72,81 +72,89 @@
 //   next(); // next de di den save(), neu ko next() la ham save() ko chay
 // });
 // =======
-const mongoose = require( 'mongoose' )
-const validator = require( 'validator' )
-const bcrypt = require( 'bcrypt' )
-const jwt = require( 'jsonwebtoken' )
-require( 'dotenv' ).config()
-const userSchema = mongoose.Schema( {
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        validate( value ) {
-            if ( !validator.isEmail( value ) ) {
-                throw new Error( 'Invalid Email' )
-            }
-        }
+const mongoose = require("mongoose");
+const validator = require("validator");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const userSchema = mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error("Invalid Email");
+      }
     },
-    password: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    role: {
-        type: String,
-        enum: [ 'user', 'admin', 'sale_employees', 'manager' ], // enum just allow user or admin
-        default: 'user'
-    },
-    firstName: {
-        type: String,
-        maxLength: 100,
-        trim: true,
-        default: '',
-    },
-    lastName: {
-        type: String,
-        maxLength: 100,
-        trim: true,
-        default: '',
-    },
-    cart: {
-        type: Array,
-        default: [],
-    },
-    history: {
-        type: Array,
-        default: [],
-    },
-    verified: {
-        type: Boolean,
-        default: false
-    },
-    sheets: {
-        Array: [],
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Sheet'
-    }
-} )
+  },
+  password: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  phone: {
+    type: String,
+    default: "0000000000",
+  },
+  role: {
+    type: String,
+    enum: ["user", "admin", "sale_employees", "manager"], // enum just allow user or admin
+    default: "user",
+  },
+  firstName: {
+    type: String,
+    maxLength: 100,
+    trim: true,
+    default: "",
+  },
+  lastName: {
+    type: String,
+    maxLength: 100,
+    trim: true,
+    default: "",
+  },
+  cart: {
+    type: Array,
+    default: [],
+  },
+  history: {
+    type: Array,
+    default: [],
+  },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
+  sheets: {
+    Array: [],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Sheet",
+  },
+  status: {
+    type: String,
+    default: "Active",
+  },
+});
 // ========= HASHING PASSWORD
 // this method will run before save()
-userSchema.pre( 'save', async function ( next ) {
-    let user = this // this dai dien cho user intance tu cai req
-    // if để khi mà người dùng thay đổi password thì thằng này mới chạy
-    if ( user.isModified( 'password' ) ) {
-        const salt = await bcrypt.genSalt( 10 ) // generate salt
-        const hash = await bcrypt.hash( user.password, salt )
-        user.password = hash
-    }
-    next() // next de di den save(), neu ko next() la ham save() ko chay
-} )
+userSchema.pre("save", async function (next) {
+  let user = this; // this dai dien cho user intance tu cai req
+  // if để khi mà người dùng thay đổi password thì thằng này mới chạy
+  if (user.isModified("password")) {
+    const salt = await bcrypt.genSalt(10); // generate salt
+    const hash = await bcrypt.hash(user.password, salt);
+    user.password = hash;
+  }
+  next(); // next de di den save(), neu ko next() la ham save() ko chay
+});
 // >>>>>>> backend-update
 
 // generate token, dont need to ask password to Auth milion time when user move
 // so that we using token
 userSchema.methods.generateAuthToken = function () {
-// <<<<<<< main
+  // <<<<<<< main
   let user = this;
   const userObj = {
     sub: user._id.toHexString(),
