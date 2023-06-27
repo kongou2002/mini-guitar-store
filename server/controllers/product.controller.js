@@ -1,68 +1,68 @@
-const {productService} = require('../services')
+const { productService } = require( '../services' )
 
 
 
 const productController = {
-    async addProduct(req, res, next) {
+    async addProduct( req, res, next ) {
         try {
-            const product = await productService.addProduct(req.body)
-            res.json(product)
+            const product = await productService.addProduct( req.body )
+            res.json( product )
 
-        } catch (error) {
-            next(error)
+        } catch ( error ) {
+            next( error )
         }
     },
-    async findProductById(req, res, next) {
+    async findProductById( req, res, next ) {
         try {
             const _id = req.params.id;
-            const product = await productService.getProductById(_id)
-            res.json(product)
+            const product = await productService.getProductById( _id )
+            res.json( product )
 
-        } catch (error) {
-            next(error)
+        } catch ( error ) {
+            next( error )
         }
     },
-    async updateProductById(req, res, next) {
+    async updateProductById( req, res, next ) {
         try {
             const _id = req.params.id
-            const product = await productService.updateProductById(_id, req.body)
-            res.json(product)      
-        } catch (error) {
-            next(error)
+            const product = await productService.updateProductById( _id, req.body )
+            res.json( product )
+        } catch ( error ) {
+            next( error )
         }
     },
-    async deleteProductById(req, res, next) {
+    async deleteProductById( req, res, next ) {
         try {
             const _id = req.params.id
-            const product = await productService.deleteProductById(_id)
-            res.json(product)    
-        } catch (error) {
-            next(error)
+            const product = await productService.deleteProductById( _id )
+            res.json( product )
+        } catch ( error ) {
+            next( error )
         }
     },
-    async allProducts(req, res, next) {
+    async allProducts( req, res, next ) {
         try {
-            const products = await productService.allProducts(req)
-            res.json(products)
-        } catch (error) {
-            next(error)
+            const products = await productService.allProducts( req )
+            res.json( products )
+        } catch ( error ) {
+            next( error )
         }
     },
-    async paginateProducts(req, res, next) {
+    async paginateProducts( req, res, next ) {
         try {
-            const products = await productService.paginateProducts(req)
-            res.json(products)
-        } catch (error) {
-            next(error)
+            const products = await productService.paginateProducts( req )
+            res.json( products )
+        } catch ( error ) {
+            next( error )
         }
     },
-    async picUpload(req, res, next) {
+    async picUpload( req, res, next ) {
         try {
             // nhờ vào thg formidable nên req nó đã có sẵn json của hình ảnh
-            const picture = await productService.picUpload(req)
-            res.json(picture)
-        } catch (error) {
-            next(error)
+            const picture = await productService.picUpload( req )
+            res.json( picture )
+        } catch ( error ) {
+            next( error )
         }
     }
 }
