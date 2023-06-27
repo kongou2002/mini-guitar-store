@@ -9,7 +9,7 @@ const routes = require("./routes");
 const passport = require("passport");
 const { jwtStrategy } = require("./middleware/passport");
 const { handleError, convertToApiError } = require("./middleware/apiError");
-
+const cors = require("cors");
 // mongodb+srv://admin:<password>@cluster0.zp1bn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 const mongoUri = `mongodb://localhost:27017/my_sdn`;
 mongoose.connect(mongoUri);
@@ -17,6 +17,7 @@ mongoose.connect(mongoUri);
 // body parser
 app.use(express.json());
 // sanitize
+app.use(cors());
 app.use(xss());
 app.use(passport.initialize());
 passport.use("jwt", jwtStrategy);

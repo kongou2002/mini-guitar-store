@@ -25,7 +25,7 @@ class PayPalHttpClient extends paypalhttp.HttpClient {
     this.addInjector(function (req) {
       req.headers['Accept-Encoding'] = 'gzip';
       req.headers["sdk_name"] = "Checkout SDK";
-      req.headers["sdk_version"] = "1.0.2";
+      req.headers["sdk_version"] = "1.0.3";
       req.headers["sdk_tech_stack"] = "NodeJS " + process.version;
       req.headers["api_integration_type"] = "PAYPALSDK";
     });

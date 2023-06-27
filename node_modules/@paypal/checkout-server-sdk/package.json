@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-server-sdk",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "NodeJS SDK for PayPal Checkout APIs",
   "keywords": [],
   "homepage": "https://github.com/paypal/Checkout-NodeJS-SDK#readme",
@@ -17,7 +17,7 @@
     "node": ">=8"
   },
   "dependencies": {
-    "@paypal/paypalhttp": "^1.0.0"
+    "@paypal/paypalhttp": "^1.0.1"
   },
   "devDependencies": {
     "btoa": "^1.2.1",
