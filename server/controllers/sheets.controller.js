@@ -1,9 +1,17 @@
 const { sheetService } = require( '../services' );
-
+const { userService } = require( '../services' )
 const sheetController = {
     async addSheet( req, res, next ) {
         try {
             const sheet = await sheetService.addSheet( req.body )
+            console.log( sheet )
+            const user = await userService.findUserById( req.body.employeeId )
+            const updatedSheets = [ ...user.sheets, sheet._id ]; // Push new sheet ID into existing sheets array
+            console.log( user.sheets, updatedSheets )
+            const updateUser = await userService.updateUserById( req.body.employeeId, {
+                sheets: updatedSheets,
+            } );
+            console.log( updateUser )
             res.json( sheet )
 
         }
@@ -51,16 +59,16 @@ const sheetController = {
             next( error )
         }
     },
-    // async getSheetByEmployeeId( req, res, next ) {
-    //     try {
-    //         const employeeId = req.params.id
-    //         const sheets = await sheetService.getSheetByEmployeeId( employeeId )
-    //         res.json( sheets )
-    //     }
-    //     catch ( error ) {
-    //         next( error )
-    //     }
-    // }
+    async getSheetByEmployeeId( req, res, next ) {
+        try {
+            const employeeId = req.params.id
+            const sheets = await sheetService.getSheetByEmployeeId( employeeId )
+            res.json( sheets )
+        }
+        catch ( error ) {
+            next( error )
+        }
+    }
 
 }
 

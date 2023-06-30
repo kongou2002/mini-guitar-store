@@ -6,10 +6,15 @@
 
 const mongoose = require( 'mongoose' )
 const sheetSchema = mongoose.Schema( {
+    employeeId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     sheetNumber: {
         type: String,
         required: true,
-        unique: true,
+        enum: [ "sheet 1", "sheet 2", "sheet 3" ],
         trim: true,
         maxLength: 100,
     },

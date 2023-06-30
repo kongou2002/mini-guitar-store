@@ -1,33 +1,33 @@
-const { User } = require("../models/user");
-const { ApiError } = require("../middleware/apiError");
-const httpStatus = require("http-status");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const { User } = require( "../models/user" );
+const { ApiError } = require( "../middleware/apiError" );
+const httpStatus = require( "http-status" );
+const jwt = require( "jsonwebtoken" );
+require( "dotenv" ).config();
 // modify password user ...
 
-const validateToken = async (token) => {
-  return jwt.verify(token, process.env.DB_SECRET);
+const validateToken = async ( token ) => {
+  return jwt.verify( token, process.env.DB_SECRET );
 };
 
 const findAllUser = async () => {
-  return await User.find({
+  return await User.find( {
     role: {
       $eq: "user",
     },
-  });
+  } );
 };
 const findAllAccountExceptUser = async () => {
-  return await User.find({
+  return await User.find( {
     role: { $ne: "user" },
-  });
+  } );
 };
-const findUserByEmail = async (email) => {
-  return await User.findOne({ email });
+const findUserByEmail = async ( email ) => {
+  return await User.findOne( { email } );
 };
-const findUserById = async (_id) => {
-  return await User.findById(_id);
+const findUserById = async ( _id ) => {
+  return await User.findById( _id );
 };
-const updateUserProfile = async (req) => {
+const updateUserProfile = async ( req ) => {
   try {
     // make sure to validate
 
@@ -38,20 +38,20 @@ const updateUserProfile = async (req) => {
           ...req.body.data,
         },
       },
-      { new: true }
+      { new: true },
     );
-    if (!user) {
-      throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    if ( !user ) {
+      throw new ApiError( httpStatus.NOT_FOUND, "User not found" );
     }
     return user;
-  } catch (error) {
+  } catch ( error ) {
     throw error;
   }
 };
-const updateUserEmail = async (req) => {
+const updateUserEmail = async ( req ) => {
   try {
-    if (await User.emailTaken(req.body.newEmail)) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
+    if ( await User.emailTaken( req.body.newEmail ) ) {
+      throw new ApiError( httpStatus.BAD_REQUEST, "Email already taken" );
     }
     const user = await User.findOneAndUpdate(
       { _id: req.user._id, email: req.user.email },
@@ -63,11 +63,31 @@ const updateUserEmail = async (req) => {
       },
       { new: true }
     );
-    if (!user) {
-      throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    if ( !user ) {
+      throw new ApiError( httpStatus.NOT_FOUND, "User not found" );
     }
     return user;
-  } catch (error) {
+  } catch ( error ) {
+    throw error;
+  }
+};
+const updateUserById = async ( _id, userUpdate ) => {
+  try {
+    // push the sheet id to the user
+    const user = await User.findOneAndUpdate(
+      { _id },
+      {
+        $set: {
+          ...userUpdate,
+        },
+      },
+      { new: true },
+    );
+    if ( !user ) {
+      throw new ApiError( httpStatus.NOT_FOUND, "User not found" );
+    }
+    return user;
+  } catch ( error ) {
     throw error;
   }
 };
@@ -79,4 +99,5 @@ module.exports = {
   validateToken,
   findAllUser,
   findAllAccountExceptUser,
+  updateUserById,
 };

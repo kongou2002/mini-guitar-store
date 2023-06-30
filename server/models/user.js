@@ -89,6 +89,10 @@ const userSchema = mongoose.Schema( {
             }
         }
     },
+    phone: {
+        type: String,
+        default: "0000000000",
+    },
     password: {
         type: String,
         required: true,
@@ -123,11 +127,14 @@ const userSchema = mongoose.Schema( {
         type: Boolean,
         default: false
     },
-    sheets: {
-        Array: [],
+    sheets: [ {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Sheet'
-    }
+        ref: 'Sheet',
+    } ],
+    status: {
+        type: String,
+        default: "Active",
+    },
 } )
 // ========= HASHING PASSWORD
 // this method will run before save()
@@ -146,37 +153,37 @@ userSchema.pre( 'save', async function ( next ) {
 // generate token, dont need to ask password to Auth milion time when user move
 // so that we using token
 userSchema.methods.generateAuthToken = function () {
-// <<<<<<< main
-  let user = this;
-  const userObj = {
-    sub: user._id.toHexString(),
-    email: user.email,
-  };
-  const token = jwt.sign(userObj, process.env.DB_SECRET, { expiresIn: "1d" });
-  return token;
+    // <<<<<<< main
+    let user = this;
+    const userObj = {
+        sub: user._id.toHexString(),
+        email: user.email,
+    };
+    const token = jwt.sign( userObj, process.env.DB_SECRET, { expiresIn: "1d" } );
+    return token;
 };
 userSchema.methods.generateRegisterToken = function () {
-  let user = this;
-  const userObj = {
-    sub: user._id.toHexString(),
-  };
-  const token = jwt.sign(userObj, process.env.DB_SECRET, { expiresIn: "10h" });
-  return token;
+    let user = this;
+    const userObj = {
+        sub: user._id.toHexString(),
+    };
+    const token = jwt.sign( userObj, process.env.DB_SECRET, { expiresIn: "10h" } );
+    return token;
 };
 
-userSchema.statics.emailTaken = async function (email) {
-  const user = await this.findOne({ email });
-  return !!user;
+userSchema.statics.emailTaken = async function ( email ) {
+    const user = await this.findOne( { email } );
+    return !!user;
 };
-userSchema.methods.comparePassword = async function (candidatePassword) {
-  // candidate password = hash password
-  const user = this;
-  const match = await bcrypt.compare(candidatePassword, user.password);
-  return match;
+userSchema.methods.comparePassword = async function ( candidatePassword ) {
+    // candidate password = hash password
+    const user = this;
+    const match = await bcrypt.compare( candidatePassword, user.password );
+    return match;
 };
 // create instance
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model( "User", userSchema );
 
 module.exports = { User };
 // =======
