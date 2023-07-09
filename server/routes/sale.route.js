@@ -9,5 +9,6 @@ router.put( '/:id', auth( 'createAny', 'sale' ), saleController.updateSaleById )
 router.delete( '/:id', auth( 'createAny', 'sale' ), saleController.deleteSaleById );
 router.get( '/', auth( 'readAny', 'sale' ), saleController.allSales );
 router.get( '/employee/:id', auth( 'createAny', 'sale' ), saleController.getSaleByEmployeeId );
+router.delete( '/admin/delete', saleController.deleteAllSales);
 
 module.exports = router;
