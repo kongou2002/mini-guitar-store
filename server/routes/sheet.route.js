@@ -13,4 +13,7 @@ router.route( '/:id' )
     .patch( sheetController.updateSheetById )
     .delete( sheetController.deleteSheetById )
 
+router.route( '/employee/:id' )
+    .get( sheetController.getSheetByEmployeeId )
+
 module.exports = router

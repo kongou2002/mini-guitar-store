@@ -70,6 +70,17 @@ const getSheetByDate = async ( date ) => {
         throw error;
     }
 }
+const getSheetByEmployeeId = async ( employeeId ) => {
+    try {
+        const sheet = await Sheet.find( { employeeId } ).populate( 'employeeId' ).populate( 'productId' );
+        if ( !sheet ) {
+            throw new ApiError( httpStatus.NOT_FOUND, 'Sheet not found' );
+        }
+        return sheet;
+    } catch ( error ) {
+        throw error;
+    }
+}
 
 module.exports = {
     addSheet,
@@ -77,5 +88,6 @@ module.exports = {
     getSheetById,
     updateSheetById,
     deleteSheetById,
-    getSheetByDate
+    getSheetByDate,
+    getSheetByEmployeeId
 }

@@ -13,6 +13,8 @@ let grantsObject = {
         brand: allPowers,
         product: allPowers,
         site: allPowers,
+        sale: allPowers,
+        sheet: allPowers,
     },
     manager: {
         profile: {
@@ -59,6 +61,8 @@ let grantsObject = {
             'read:any': [ '*' ],
             'update:any': [ '*' ],
             'create:any': [ '*' ],
+        }, sheet: {
+            'read:any': [ '*' ],
         }
     },
     user: {

@@ -3,20 +3,20 @@ const { ApiError } = require( '../middleware/apiError' );
 const { Product } = require( '../models/product' );
 const httpStatus = require( 'http-status' );
 
-const addSale = async ( body ) => {
+const addSale = async (body) => {
     try {
-        const sale = new Sale( {
+        const sale = new Sale({
             ...body,
-        } );
+        });
         await sale.save();
         return sale;
-    } catch ( error ) {
+    } catch (error) {
         throw error;
     }
-}
+  };
 const allSales = async ( req ) => {
     try {
-        const sales = await Sale.find();
+        const sales = await Sale.find().populate( 'employeeId' ).populate( 'products.productId' );
         return sales;
     } catch ( error ) {
         throw error;
@@ -75,6 +75,14 @@ const getPrice = async ( productId ) => {
         throw error;
     }
 }
+const deleteMany = async()=>{
+    try {
+        const sale = await Sale.deleteMany();
+        return sale;
+    } catch (error) {
+        throw error;
+    }
+}
 module.exports = {
     addSale,
     allSales,
@@ -82,5 +90,6 @@ module.exports = {
     deleteSaleById,
     getSaleById,
     getSaleByEmployeeId,
-    getPrice
+    getPrice,
+    deleteMany
 }

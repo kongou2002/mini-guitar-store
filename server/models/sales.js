@@ -13,17 +13,19 @@ const saleSchema = mongoose.Schema( {
         ref: 'User',
         required: true,
     },
-    productId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-        required: true,
-    },
-    quantity: {
-        type: Number,
-        required: true,
-        trim: true,
-        maxLength: 100,
-    },
+    products:[{
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            required: true,
+        },
+        quantity: {
+            type: Number,
+            required: true,
+            trim: true,
+            maxLength: 100,
+        },
+    }],
     timestamp: {
         type: Date,
         default: Date.now,
