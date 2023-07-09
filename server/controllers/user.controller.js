@@ -2,6 +2,30 @@ const { userService, authService, emailService } = require("../services");
 const httpStatus = require("http-status");
 const { ApiError } = require("../middleware/apiError");
 const usersController = {
+  async deleteUserByAdmin(req, res, next) {
+    try {
+      await userService.deleteUserByAdmin(req.body._id);
+      res.json(req.body._id);
+    } catch (error) {
+      next(error);
+    }
+  },
+  async modifyUserByAdmin(req, res, next) {
+    try {
+      const user = await userService.modifyUserByAdmin(req.body);
+      res.json(user);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async createUserByAdmin(req, res, next) {
+    try {
+      const user = await userService.createUserByAdmin(req.body);
+      res.json(user);
+    } catch (error) {
+      console.log(error);
+    }
+  },
   async getAllUser(req, res, next) {
     try {
       const users = await userService.findAllUser();
